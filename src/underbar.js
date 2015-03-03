@@ -199,7 +199,10 @@
   // provided, provide a default one
   _.some = function(collection, iterator) {
     // TIP: There's a very clever way to re-use every() here.
-
+    if (iterator === undefined) {iterator = _.identity;}
+    return _.reduce(collection, function(sum, element) {
+      return (sum || Boolean(iterator(element)));
+    }, false);
   };
 
 
