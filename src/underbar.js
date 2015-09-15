@@ -388,6 +388,21 @@
   // Take the difference between one array and a number of other arrays.
   // Only the elements present in just the first array will remain.
   _.difference = function (array) {
+    var arrays = Array.prototype.slice.call(arguments);
+    var hash = _.reduce(arrays[0], function (obj, value) {
+      obj[value] = value;
+      return obj;
+    }, {})
+    _.each(arrays.slice(1), function (array) {
+      _.each(array, function (element) {
+        if (element in hash) {
+          delete hash[element];
+        }
+      });
+    });
+    return _.map(hash, function (value, key) {
+      return value;
+    });
   };
 
   // Returns a function, that, when invoked, will only be triggered at most once
