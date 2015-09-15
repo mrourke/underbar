@@ -106,19 +106,10 @@
     return results;
   };
 
-  /*
-   * TIP: map is really handy when you want to transform an array of
-   * values into a new array of values. _.pluck() is solved for you
-   * as an example of this.
-   */
-
   // Takes an array of objects and returns and array of the values of
   // a certain property in it. E.g. take an array of people and return
   // an array of just their ages
   _.pluck = function (collection, key) {
-    // TIP: map is really handy when you want to transform an array of
-    // values into a new array of values. _.pluck() is solved for you
-    // as an example of this.
     return _.map(collection, function (item) {
       return item[key];
     });
@@ -134,19 +125,15 @@
   // the case where a starting value is not passed, the iterator is not invoked
   // until the second element, with the first element as it's second argument.
   //
-  // Example:
-  //   var numbers = [1,2,3];
-  //   var sum = _.reduce(numbers, function(total, number){
-  //     return total + number;
-  //   }, 0); // should be 6
-  //
-  //   var identity = _.reduce([5], function(total, number){
-  //     return total + number * number;
-  //   }); // should be 5, regardless of the iterator function passed in
-  //          No accumulator is given so the first element is used.
   _.reduce = function (collection, iterator, accumulator) {
+    var skip = arguments.length < 3;
     _.each(collection, function (element) {
-      accumulator === undefined ? accumulator = element : accumulator = iterator(accumulator, element);
+      if (skip) {
+        accumulator = element;
+        skip = false;
+      } else {
+        accumulator = iterator(accumulator, element);
+      }
     });
     return accumulator;
   };
