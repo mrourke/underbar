@@ -411,5 +411,14 @@
   //
   // Note: This is difficult! It may take a while to implement.
   _.throttle = function (func, wait) {
+    var initial = true;
+    var lastCalled = Date.now();
+    return function () {
+      if (initial || Date.now() - lastCalled >= wait) {
+        initial = false;
+        lastCalled = Date.now();
+        func.apply(null, Array.prototype.slice.call(arguments));
+      }
+    }
   };
 } ());
