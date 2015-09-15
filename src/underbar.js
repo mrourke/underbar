@@ -357,12 +357,32 @@
       }
     });
     return result;
-
   };
 
   // Takes an arbitrary number of arrays and produces an array that contains
   // every item shared between all the passed-in arrays.
   _.intersection = function () {
+    var arrays = Array.prototype.slice.call(arguments);
+    function objectify(array) {
+      return _.reduce(array, function (object, element) {
+        object[element] = element;
+        return object;
+      }, {});
+    }
+    function intersection(obj1, obj2) {
+      return _.reduce(obj1, function (intersection, value, key) {
+        if (obj2.hasOwnProperty(key)) {
+          intersection[key] = value;
+        }
+        return intersection;
+      }, {});
+    }
+    var result = _.reduce(arrays.slice(1), function (common, set) {
+      return intersection(common, objectify(set));
+    }, objectify(arrays[0]));
+    return _.map(result, function (value, key) {
+      return value;
+    });
   };
 
   // Take the difference between one array and a number of other arrays.
