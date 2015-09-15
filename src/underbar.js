@@ -157,7 +157,6 @@
   // Determine whether any of the elements pass a truth test. If no iterator is
   // provided, provide a default one
   _.some = function (collection, iterator) {
-    // TIP: There's a very clever way to re-use every() here.
     if (iterator === undefined) { iterator = _.identity; }
     return _.reduce(collection, function (sum, element) {
       return (sum || Boolean(iterator(element)));
@@ -174,15 +173,6 @@
 
   // Extend a given object with all the properties of the passed in
   // object(s).
-  //
-  // Example:
-  //   var obj1 = {key1: "something"};
-  //   _.extend(obj1, {
-  //     key2: "something new",
-  //     key3: "something else new"
-  //   }, {
-  //     bla: "even more stuff"
-  //   }); // obj1 now contains key1, key2, key3 and bla
   _.extend = function (obj) {
     _.each(arguments, function (value) {
       _.each(value, function (value, key) {
@@ -199,7 +189,7 @@
     _.each(arguments, function (value) {
       _.each(value, function (value, key) {
         if (!obj.hasOwnProperty(key)) obj[key] = value;
-      })
+      });
     });
     return obj;
   };
@@ -216,22 +206,14 @@
   // Return a function that can be called at most one time. Subsequent calls
   // should return the previously returned value.
   _.once = function (func) {
-    // TIP: These variables are stored in a "closure scope" (worth researching),
-    // so that they'll remain available to the newly-generated function every
-    // time it's called.
     var alreadyCalled = false;
     var result;
 
-    // TIP: We'll return a new function that delegates to the old one, but only
-    // if it hasn't been called before.
     return function () {
       if (!alreadyCalled) {
-        // TIP: .apply(this, arguments) is the standard way to pass on all of the
-        // infromation from one function call to another.
         result = func.apply(this, arguments);
         alreadyCalled = true;
       }
-      // The new function always returns the originally computed result.
       return result;
     };
   };
