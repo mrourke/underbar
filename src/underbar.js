@@ -266,7 +266,7 @@
     var duplicate = array.slice();
     var result = [];
     for (var i = 0, rand; i < array.length; i++) {
-      rand = Math.floor(Math.random()*duplicate.length);
+      rand = Math.floor(Math.random() * duplicate.length);
       result.push(duplicate.splice(rand, 1)[0])
     }
     return result;
@@ -284,6 +284,17 @@
   // Calls the method named by functionOrKey on each value in the list.
   // Note: You will need to learn a bit about .apply to complete this.
   _.invoke = function (collection, functionOrKey, args) {
+    var results = [];
+    if (typeof functionOrKey === 'function') {
+      _.each(collection, function (item, key, c) {
+        results.push(functionOrKey.apply(item));
+      });
+    } else if (typeof functionOrKey === 'string') {
+      _.each(collection, function (item, key, c) {
+        results.push(collection[key][functionOrKey].apply(item));
+      });
+    }
+    return results;
   };
 
   // Sort the object's values by a criterion produced by an iterator.
@@ -291,6 +302,26 @@
   // of that string. For example, _.sortBy(people, 'name') should sort
   // an array of people by their name.
   _.sortBy = function (collection, iterator) {
+    if (typeof iterator === 'function') {
+      collection.sort(function (a, b) {
+        if (iterator(a) < iterator(b)) {
+          return -1;
+        } else if (iterator(a) > iterator(b)) {
+          return 1;
+        }
+        return 0;
+      });
+    } else if (typeof iterator === 'string') {
+      collection.sort(function (a, b) {
+        if (a[iterator] < b[iterator]) {
+          return -1;
+        } else if (a[iterator] > b[iterator]) {
+          return 1;
+        }
+        return 0;
+      });
+    }
+    return collection;
   };
 
   // Zip together two or more arrays with elements of the same index
