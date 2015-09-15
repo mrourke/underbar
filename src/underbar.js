@@ -80,18 +80,14 @@
 
   // Produce a duplicate-free version of the array.
   _.uniq = function (array) {
-    if (array === null) return [];
-    var result = [array[0]];
-    for (var i = 1; i < array.length; i++) {
-      for (var j = 0; j < result.length; j++) {
-        if (array[i] === result[j]) {
-          break;
-        } else if (j === result.length - 1) {
-          result.push(array[i]);
-          break;
-        }
-      }
-    }
+    var hash = {};
+    var result = [];
+    _.each(array, function (element) {
+      hash[element] = element;
+    });
+    _.each(hash, function (value) {
+      result.push(value);
+    });
     return result;
   };
 
