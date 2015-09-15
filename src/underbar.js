@@ -94,16 +94,11 @@
 
   // Return the results of applying an iterator to each element.
   _.map = function (collection, iterator) {
-    var results;
-    if (Array.isArray(collection)) {
-      results = [];
-    } else {
-      results = {};
-    }
-    _.each(collection, function (element, index) {
-      results[index] = iterator(element);
+    var mapped = [];
+    _.each(collection, function (e, i, c) {
+      mapped.push(iterator(e, i, c));
     });
-    return results;
+    return mapped;
   };
 
   // Takes an array of objects and returns and array of the values of
@@ -127,12 +122,12 @@
   //
   _.reduce = function (collection, iterator, accumulator) {
     var skip = arguments.length < 3;
-    _.each(collection, function (element) {
+    _.each(collection, function (e, i, c) {
       if (skip) {
-        accumulator = element;
+        accumulator = e;
         skip = false;
       } else {
-        accumulator = iterator(accumulator, element);
+        accumulator = iterator(accumulator, e, i, c);
       }
     });
     return accumulator;
